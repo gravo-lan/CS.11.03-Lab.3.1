@@ -1,10 +1,1 @@
-[
-  {
-    "Name": "",
-    "HP": 10,
-    "Weapon": "Stick",
-    "Level": 1,
-    "XP": 0,
-    "Progress": 0
-  }
-]
+[{"Progress":9,"HP":4,"XP":-98,"Level":5,"Weapon":"Stick","Name":"CapGravo"}]

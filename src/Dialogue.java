@@ -32,6 +32,10 @@ public class Dialogue {
         if (Main.progress==9) {
             System.out.println("Follow the guiding light?\n[1] Yes, I'd rather be able to see! (Exploration Tutorial)\n[2] No, maybe the laughter is coming from someone who could help me! (Combat Tutorial)\n(Don't worry, you can always do one or the other later!)");
             int option = input.nextInt();
+            if (option==1) {
+                Combat tutorial = new Combat(Main.hp,"random");
+                tutorial.startCombat();
+            }
         }
     }
     private static void text(String str) {

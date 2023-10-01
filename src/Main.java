@@ -50,6 +50,16 @@ public class Main {
         }
         write(data);
     }
+    
+    public static void levelUp() throws Exception {
+        while (xp>0) {
+            if (xp>(level/0.3)*(level/0.3)) {
+                level++;
+                xp-= (long) ((level/0.3)*(level/0.3));
+            }
+        }
+        saveGame();
+    }
 
     private static void newGame() throws Exception {
         Files.copy(Paths.get("./src/defaultData.json"), Paths.get("./src/data.json"), StandardCopyOption.REPLACE_EXISTING);
