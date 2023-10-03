@@ -3,6 +3,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import java.io.FileReader;
 import java.util.*;
+import java.util.Random;
 
 public class Dialogue {
     public static ArrayList<String> dialogue = new ArrayList<>();
@@ -13,7 +14,7 @@ public class Dialogue {
         Main.loadData((JSONArray) parser.parse(new FileReader("./src/data.json")));
         load();
         runD();
-        System.out.println("[1] Examine the drawer\n[2] Grab something just in case\n[3] Nevermind, I'll by a new phone...");
+        System.out.println("[1] Examine the drawer\n[2] Grab something just in case\n[3] Never-mind, I'll by a new phone...");
         int option = input.nextInt();
         if (option==1) text("You grab onto a nearby stick as you feel yourself sucked into the abyss...");
         else if (option==2) text("You grab a nearby stick on your desk, before you suddenly get sucked into the abyss...");
@@ -33,7 +34,12 @@ public class Dialogue {
             System.out.println("Follow the guiding light?\n[1] Yes, I'd rather be able to see! (Exploration Tutorial)\n[2] No, maybe the laughter is coming from someone who could help me! (Combat Tutorial)\n(Don't worry, you can always do one or the other later!)");
             int option = input.nextInt();
             if (option==1) {
-                Combat tutorial = new Combat(Main.hp,"random");
+                ;
+            }
+            else if (option==2) {
+                text("A shadowy figure appears...");
+                text("[COMBAT TUTORIAL]\nCombat is a turn based system. Every turn you can either defend, attack or attempt an escape. Defending will block the incoming enemies' attack, allowing you to recuperate and heal (Critical hits will disable your defenses). Attacking will damage the enemy and escape chances scale with your remaining health.");
+                Combat tutorial = new Combat(Main.hp,"Howling Bat");
                 tutorial.startCombat();
             }
         }
@@ -67,6 +73,16 @@ public class Dialogue {
             Main.saveGame();
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private static void explore() {
+        String currentRoom = "Entrance";
+        boolean exit = false;
+        while (!exit) {
+            System.out.println("Current Room: " + currentRoom);
+            text("The guiding light splits into four, before casting itself into the four doors surrounding you...");
+            System.out.println("EXPLORATION\n[1] North Wing\n[2] East Wing\n[3] South Wing\n[4] West Wing");
         }
     }
 }

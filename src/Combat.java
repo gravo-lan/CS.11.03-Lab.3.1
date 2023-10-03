@@ -101,14 +101,15 @@ public class Combat {
 
     private void defend() {
         blocked=true;
+        playerHP++;
         System.out.println(Main.name + " defends against the enemy's attack!");
     }
 
     private boolean tryToEscape() {
         Random rand = new Random();
         double hpChance = (double) playerHP/100;
-        double chance = (double) rand.nextInt(1,101) * hpChance;
-        return chance > 50;
+        double chance = (double) rand.nextInt(1,1001) * hpChance;
+        return chance < 200;
     }
 
     private void enemyTurn() {
