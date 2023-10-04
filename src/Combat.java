@@ -9,6 +9,7 @@ public class Combat {
 
     public Combat(long startingHP, String enemyType) {
         playerHP = startingHP;
+        enemyHP = (int) (10 + (0.5*((int) Main.level * (int) Main.level)));
         if (!enemyType.equals("random")) enemy = enemyType;
         else {
             Random rand = new Random();
@@ -22,7 +23,6 @@ public class Combat {
                     "Wandering Soul" //Low HP, High ATK
             };
             enemy = enemyList[rand.nextInt(6)];
-            enemyHP = (int) (10 + 0.5*((int) Main.level * (int) Main.level));
             switch (enemy) {
                 case "Wandering Soul", "Lost Traveller" -> enemyHP /= 3;
                 case "Echo Bat", "Howling Bat" -> enemyHP /= 2;
@@ -57,13 +57,16 @@ public class Combat {
                 default -> System.out.println("Invalid choice. Please try again.");
             }
 
-            // Simulate enemy's turn (You'll need to implement this separately)
             enemyTurn();
             blocked = false;
         }
 
         // Player has lost the battle
-        if (!isBattleOver) System.out.println("You have been defeated in battle!");
+        if (!isBattleOver) {
+            System.out.println("You have been defeated in battle!");
+            Main.hp=Main.level+10;
+            System.exit(0);
+        }
     }
 
     private int getPlayerChoice() {
@@ -73,7 +76,7 @@ public class Combat {
     }
 
     private void attackEnemy() throws Exception {
-        long dmg = 1;
+        long dmg = Main.level;
         if (Main.weapon.equals("Stick")) dmg++;
         System.out.println(Main.name + " attacks the " + enemy + "!");
         Random crit = new Random();
@@ -101,7 +104,7 @@ public class Combat {
 
     private void defend() {
         blocked=true;
-        playerHP++;
+        if (playerHP<10*Main.level) playerHP++;
         System.out.println(Main.name + " defends against the enemy's attack!");
     }
 
@@ -122,7 +125,7 @@ public class Combat {
             } else if (chance > 89) {
                 System.out.println("The " + enemy + " lets out a haunting wail, but otherwise does nothing...");
             } else {
-                long dmg = 3;
+                long dmg = 2;
                 if (enemy.equals("Lost Traveller") || enemy.equals("Wandering Soul")) dmg *= 1.5;
                 else if (!enemy.equals("Stone Guardian")) dmg /= 1.5;
                 System.out.println(enemy + " attacks!");
@@ -131,7 +134,8 @@ public class Combat {
                 if (crit.nextInt(99) > 89 || (ihatecodingcombat) && crit.nextInt(99) > 79) {
                     dmg *= 2;
                     if (ihatecodingcombat) {
-                        dmg *= 3.0 / 2;
+                        dmg *= 3;
+                        dmg /= 2;
                     }
                     System.out.println("Critical hit!");
                     if (blocked) {
@@ -146,5 +150,6 @@ public class Combat {
                 }
             }
         }
+        else System.out.println(enemy + " has fainted!");
     }
 }

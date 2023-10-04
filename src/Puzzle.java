@@ -1,4 +1,11 @@
 import org.jetbrains.annotations.NotNull;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
+import java.io.FileReader;
+import java.sql.SQLOutput;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
@@ -7,8 +14,10 @@ public class Puzzle {
     private final int answerKey;
     private final boolean needsKey;
     private final String game;
-    public Puzzle(int key, String gameName) {
+    private final int outKey;
+    public Puzzle(int key, int givesKey, String gameName) {
         this.answerKey = key;
+        this.outKey = givesKey;
         needsKey = key != 0;
         if (!gameName.equals("random")) game = gameName;
         else if (!needsKey) {
@@ -16,7 +25,9 @@ public class Puzzle {
             String[] puzzleTypes = new String[]{
                     "Cipher",
                     "Riddle",
-                    "Word Jumble"
+                    "Word Jumble",
+                    "Riddle",
+                    "Riddle"
             };
             game = puzzleTypes[puzzle.nextInt(5)];
         }
@@ -33,14 +44,35 @@ public class Puzzle {
         }
     }
 
-    public int startPuzzle() throws Exception {
+    public void startPuzzle() throws Exception {
+        Random encounter = new Random();
+        int chance = encounter.nextInt(100);
+        if (chance<20) {
+            Combat random = new Combat(Main.hp,"random");
+            random.startCombat();
+        }
+        else if (chance>80) {
+            ArrayList<String> lore = new ArrayList<>();
+            JSONParser parser = new JSONParser();
+            JSONObject obj = (JSONObject) parser.parse(new FileReader("./src/dialogue.json"));
+            JSONArray arr = (JSONArray) obj.get("Lore");
+            for (Object o : arr) {
+                lore.add((String) o);
+            }
+            System.out.println("You find a mysterious item on the floor and pick it up...");
+            Random loreChoice = new Random();
+            int loreChance = loreChoice.nextInt(lore.size());
+            System.out.println(lore.get(loreChance));
+        }
         if (needsKey) {
             switch (game) {
                 case "Chest Lock" -> {
                     System.out.println("A gilded, luminescent chest sits in the centre of the room, surrounded by ornamented pillars and a small, muddied moat.\nThe chest is locked by a rusty numeric lock");
                     Scanner input = new Scanner(System.in);
                     if (input.nextInt()!=answerKey) System.out.println("The lock doesn't budge... You walk out of the room disgruntled...");
-                    else return generateKey();
+                    else {
+                        generateKey();
+                    }
                 }
                 case "Polynomial" -> {
                     System.out.println("A pedestal with a piece of parchment resting upon it lies in the centre of the dimly lit room...\nAs you approach it, letters magically appear on the parchment: a^4 + b^3 + c^2 + d");
@@ -51,7 +83,9 @@ public class Puzzle {
                             (int) Math.pow(Integer.parseInt(String.valueOf(key.charAt(2))),2) +
                             answerKey %10;
                     if (input.nextInt()!=answer) System.out.println("The parchment erases itself... You leave the room disappointed...");
-                    else return generateKey();
+                    else {
+                        generateKey();
+                    }
                 }
                 case "Smallest" -> {
                     System.out.println("In this room a swirling smoke surrounds you as you make your way to the centre.\nVoices whisper around you: \"The *smallest* things make big differences...\"\nWhat do you respond?");
@@ -59,7 +93,9 @@ public class Puzzle {
                     String key = String.valueOf(answerKey);
                     int answer = Math.min(Math.min(Integer.parseInt(String.valueOf(key.charAt(0))),Integer.parseInt(String.valueOf(key.charAt(1)))),Math.min(Integer.parseInt(String.valueOf(key.charAt(2))),answerKey%10));
                     if (input.nextInt()!=answer) System.out.println("The voices chatter amongst themselves, before throwing you out of the room...");
-                    else return generateKey();
+                    else {
+                        generateKey();
+                    }
                 }
                 case "Biggest" -> {
                     System.out.println("In this room a swirling smoke surrounds you as you make your way to the centre.\nVoices whisper around you: \"*Big* strides make *big* changes\"\nWhat do you respond?");
@@ -67,10 +103,12 @@ public class Puzzle {
                     String key = String.valueOf(answerKey);
                     int answer = Math.max(Math.max(Integer.parseInt(String.valueOf(key.charAt(0))),Integer.parseInt(String.valueOf(key.charAt(1)))),Math.max(Integer.parseInt(String.valueOf(key.charAt(2))),answerKey%10));
                     if (input.nextInt()!=answer) System.out.println("The voices chatter amongst themselves, before throwing you out of the room...");
-                    else return generateKey();
+                    else {
+                        generateKey();
+                    }
                 }
                 case "Cipher" -> {
-                    System.out.println("A pedestal with a piece of parchment resting upon it lies in the centre of the dimly lit room...\nAs you approach it, letters magically appear on the parchment: aX + bY + cZ + dW");
+                    System.out.println("A pedestal with a piece of parchment resting upon it lies in the centre of the dimly lit room...\nAs you approach it, letters magically appear on the parchment: aX + bY + cZ + dW (LOWERCASE)");
                     Scanner input = new Scanner(System.in);
                     String key = String.valueOf(answerKey);
                     String answer = "x".repeat(Integer.parseInt(String.valueOf(key.charAt(0)))) +
@@ -84,7 +122,10 @@ public class Puzzle {
         }
         else {
             switch (game) {
-                case "Cipher" -> System.out.println("idk");
+                case "Cipher" -> {
+                    System.out.println("WIP");
+                    generateKey();
+                }
                 case "Riddle" -> {
                     String[] riddles = new String[]{
                             "I have keys that open no locks. I have space, but no room. You can enter, but can't go outside. What am I?",
@@ -148,7 +189,7 @@ Ý̸͍̖͖̠̜̺̦̪̱ȏ̵̡̡̢̡̱͓̮͉̙̩̫̯͑́̀͌̔̚ǘ̶̢̟̟̺̌�
                     System.out.println("A whirlwind of souls surround you as you approach the centre of the room...\nVoices emerge from seemingly everywhere...");
                     System.out.println(riddles[choice]);
                     Scanner input = new Scanner(System.in);
-                    if (!input.next().equals(solutions[choice])) System.out.println("The voices whisper amongst themselves, before you find yourself violently expelled from the room...");
+                    if (!input.nextLine().equals(solutions[choice])) System.out.println("The voices whisper amongst themselves, before you find yourself violently expelled from the room...");
                     else if (choice>19) {
                         System.out.println("""
                                 A haunting wail echoes through the catacombs, as if all of the souls buried in the ancient structures were reawakened...
@@ -157,20 +198,21 @@ Ý̸͍̖͖̠̜̺̦̪̱ȏ̵̡̡̢̡̱͓̮͉̙̩̫̯͑́̀͌̔̚ǘ̶̢̟̟̺̌�
                                 """);
                         Scanner stall = new Scanner(System.in);
                         stall.nextLine();
-                        System.out.printf("""
-                                "Father, it's me, %s. I did it. I found it.
-                                It was right where you said it would be. They were all there.
-                                They didn't recognise me at first, but then, they thought I was you.
-                                And I found them. I put them back together, just like you asked me to.
-                                They are free but something is wrong with me...
-                                I should be dead, but I'm not.
-                                I've been living in the shadows There is only one thing left for me to do now.
-                                I'm going to find you father...
-                                I'm going to come find you...\"""",Main.name);
+                        Dialogue.text("Father, it's me " + Main.name + ". I did it. I found it.");
+                        Dialogue.text("It was right where you said it would be. They were all there.");
+                        Dialogue.text("They didn't recognise me at first, but then, they thought I was you.");
+                        Dialogue.text("And I found them. I put them back together, just like you asked me to.");
+                        Dialogue.text("They are free but something is wrong with me...");
+                        Dialogue.text("I should be dead, but I'm not.");
+                        Dialogue.text("I've been living in the shadows There is only one thing left for me to do now.");
+                        Dialogue.text("I'm going to find you father...");
+                        Dialogue.text("I'm going to come find you...");
                         Main.saveGame();
                         System.exit(0);
                     }
-                    else return generateKey();
+                    else {
+                        generateKey();
+                    }
                 }
                 case "Word Jumble" -> {
                     String original = getString();
@@ -178,12 +220,13 @@ Ý̸͍̖͖̠̜̺̦̪̱ȏ̵̡̡̢̡̱͓̮͉̙̩̫̯͑́̀͌̔̚ǘ̶̢̟̟̺̌�
                             "As you approach it, letters magically appear on the parchment: " + getShuffledWord(original));
                     System.out.println("You realise that the room wants you to unscramble the word...");
                     Scanner input = new Scanner(System.in);
-                    if (!input.next().equals(original)) System.out.println("The parchment erases itself... You leave the room disappointed...");
-                    else return generateKey();
+                    if (!input.nextLine().equals(original)) System.out.println("The parchment erases itself... You leave the room disappointed...");
+                    else {
+                        generateKey();
+                    }
                 }
             }
         }
-        return -1;
     }
 
     @NotNull
@@ -204,11 +247,8 @@ Ý̸͍̖͖̠̜̺̦̪̱ȏ̵̡̡̢̡̱͓̮͉̙̩̫̯͑́̀͌̔̚ǘ̶̢̟̟̺̌�
         return words[choice.nextInt(10)];
     }
 
-    private int generateKey() {
-        Random key = new Random();
-        int newKey = key.nextInt(10000);
-        System.out.println("You find a small piece of parchment that reads: " + newKey);
-        return newKey;
+    private void generateKey() {
+        System.out.println("You find a small piece of parchment that reads: " + outKey);
     }
 
     private String getShuffledWord(String original) {

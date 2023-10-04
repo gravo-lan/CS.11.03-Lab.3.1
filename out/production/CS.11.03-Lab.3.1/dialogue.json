@@ -8,7 +8,12 @@
     "FLOOR 1",
     "You regain consciousness in a cold, damp underground catacombs. It's pitch black, except for a faint, eerie light in the distance.",
     "Behind you, a harrowing echo of laughter fills the darkness. You get up, clenching your stick and looking around for any semblance of a clue to what was going on.",
-    "Suddenly, the faint light in the distance flashes a bright blue, perhaps signalling something to you."
+    "Suddenly, the faint light in the distance flashes a bright blue, perhaps signalling something to you.",
+    "DIALOGUE OPTION - THIS LINE IS SKIPPED AND THE USER WILL NOT SEE THIS",
+    "FLOOR 2",
+    "You quickly recognise the layout of this new floor, four wings, just as the last room...",
+    "You hear a haunting whisper in the distance: \"We're still here...\"",
+    "A strange, melancholic melody fills the air, giving you the chills. You vaguely recognise the melody from an older part of your life..."
   ],
   "Lore": [
     "Faded Journal Entry: \n\"Day 37: Lost in the depths of these catacombs. The darkness surrounds me, and the walls whisper ancient secrets. I must find a way out. My only solace is this journal, a record of my journey and a flicker of hope.\"",

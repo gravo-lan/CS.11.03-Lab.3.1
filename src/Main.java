@@ -21,7 +21,8 @@ public class Main {
 
     private static void play() throws Exception {
         if (progress<5) Dialogue.introduction();
-        else if (progress>5) Dialogue.floor1();
+        else if (progress>5&&progress<=10) Dialogue.floor1();
+        else if (progress>10) Dialogue.floor2();
     }
 
     public static void loadData(JSONArray data) {
@@ -57,7 +58,9 @@ public class Main {
                 level++;
                 xp-= (long) ((level/0.3)*(level/0.3));
             }
+            else break;
         }
+        hp=(int) (10 + (0.5*((int) Main.level * (int) Main.level)));
         saveGame();
     }
 
