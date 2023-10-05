@@ -13,7 +13,15 @@
     "FLOOR 2",
     "You quickly recognise the layout of this new floor, four wings, just as the last room...",
     "You hear a haunting whisper in the distance: \"We're still here...\"",
-    "A strange, melancholic melody fills the air, giving you the chills. You vaguely recognise the melody from an older part of your life..."
+    "A strange, melancholic melody fills the air, giving you the chills. You vaguely recognise the melody from an older part of your life...",
+    "EXPLORATION",
+    "A glowing phone emerges from the darkness...",
+    "Your father is calling. You pick up.",
+    "\"It's me.\"",
+    "...",
+    "...",
+    "...",
+    "THE END"
   ],
   "Lore": [
     "Faded Journal Entry: \n\"Day 37: Lost in the depths of these catacombs. The darkness surrounds me, and the walls whisper ancient secrets. I must find a way out. My only solace is this journal, a record of my journey and a flicker of hope.\"",

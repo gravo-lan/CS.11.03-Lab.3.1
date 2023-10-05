@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class Dialogue {
     public static ArrayList<String> dialogue = new ArrayList<>();
-    public static String flow = "000010000100001";
+    public static String flow = "00001000010000100000001";
     public static void introduction() throws Exception {
         Scanner input = new Scanner(System.in);
         JSONParser parser = new JSONParser();
@@ -62,6 +62,7 @@ public class Dialogue {
         load();
         runD();
         if (Main.progress==14) explore();
+        runD();
         System.out.println("MORE FLOORS COMING SOON! PLAY AGAIN... TRY TO FIND ALL THE LORE DROPS AND RIDDLES");
     }
 

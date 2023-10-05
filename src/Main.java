@@ -74,6 +74,7 @@ public class Main {
             JSONObject obj = (JSONObject) o;
             obj.put("Name",name.next());
         }
+        Main.progress=0;
         write(data);
     }
     
