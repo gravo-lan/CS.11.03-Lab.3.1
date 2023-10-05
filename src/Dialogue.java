@@ -87,6 +87,7 @@ public class Dialogue {
 
     private static void runD() {
         while (Integer.parseInt(String.valueOf(flow.charAt((int) Main.progress)))==0) {
+            System.out.print("<" + Main.progress + "> ");
             text(dialogue.get((int) Main.progress));
             Main.progress++;
         }
@@ -121,7 +122,7 @@ public class Dialogue {
             text("The guiding light splits into four, before casting itself into the four doors surrounding you...");
             System.out.println("EXPLORATION\n[1] North Wing\n[2] East Wing\n[3] South Wing\n[4] West Wing\n[5] Speak the code");
             Scanner input = new Scanner(System.in);
-            String room = "final";
+            String room;
             switch (input.nextInt()) {
                 case 1 -> room = firstRoom;
                 case 2 -> room = secondRoom;
